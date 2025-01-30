@@ -5,8 +5,12 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
   const { text = '', completed } = todo || {};  
 
   // Handle checkbox change
-  const handleToggleComplete = () => {
-    onToggleComplete(todo._id, todo.text); // Pass the id for completion update
+  const handleToggleComplete = (e) => {
+    if(e.target.checked == false){
+      alert("you can not undo.")
+    }else{
+      onToggleComplete(todo._id, todo.text); // Pass the id for completion update
+    }
   };
 
   // Handle delete button click (optional)
@@ -28,7 +32,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
         className="form-check-input"
         id={todo.text}
         />
-        <label className="form-check-label" htmlFor={todo.id}>
+        <label className="form-check-label" for={todo.id}>
         {text}
         </label>
     </div>
@@ -38,6 +42,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
         Delete
         </button>
     )}
+
     </li>
   );
 };

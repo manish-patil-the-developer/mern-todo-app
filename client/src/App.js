@@ -2,25 +2,19 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TodoList from './components/TodoList';
 import axios from 'axios'; // Import axios for making HTTP requests
-const dotenv = require('dotenv');
 
 const App = () => {
-  const env = dotenv.config().parsed;
 
   // State to hold the list of to-do items
   const [todos, setTodos] = useState([]);
   var todoFormdata = new FormData();
   var todoObject = {};
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = 'http://localhost:5000/todos/';
 
   const [taskNameError, setTaskNameError] = useState('');
 
-  console.log(apiUrl);
-  console.log(process.env);
-  console.log(env);
-
   const fetchTodos = async () => {
-    const response = await axios.get('http://localhost:5000/todos/'); // Replace with your actual backend URL
+    const response = await axios.get(apiUrl); // Replace with your actual backend URL
     setTodos(response.data);
   };
 
@@ -35,7 +29,7 @@ const App = () => {
     todoObject['task'] = task;
 
   
-    const addTodosToDbRequest = await axios.post('http://localhost:5000/todos/', todoFormdata) // Replace with your actual backend URL
+    const addTodosToDbRequest = await axios.post(apiUrl, todoFormdata) // Replace with your actual backend URL
     .then(response => {
       console.log('Success');
       setTaskNameError('');
@@ -56,7 +50,7 @@ const App = () => {
     todoFormdata.append('Task', task);
     todoFormdata.append('completed', true);
 
-    const markCompleteToDbRequest = await axios.put('http://localhost:5000/todos/'+id, todoFormdata) // Replace with your actual backend URL
+    const markCompleteToDbRequest = await axios.put(apiUrl+id, todoFormdata) // Replace with your actual backend URL
     .then(response => {
       console.log('Completed Successfully.');
       // setTaskNameError('');
@@ -78,7 +72,7 @@ const App = () => {
   };
 
   const deleteTaskFromDb = async (id) => {    
-    const deleteTaskFromDbRequest = await axios.delete('http://localhost:5000/todos/'+id)
+    const deleteTaskFromDbRequest = await axios.delete(apiUrl+id)
     .then(response => {
       console.log('removed successfully');
       // setTaskNameError('');
